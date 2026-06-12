@@ -78,6 +78,21 @@ Through this project, I gained experience in:
 - Working on a large-scale project
 - Hackathon-based development
 
+## Screenshots
+
+### Dashboard Badges
+![Badges] (badges - skillfi.jpeg)
+
+### Login Page
+![Login Page (login page skillfi.jpeg)
+
+### Services Page
+![Services] (services page- skillfi.jpeg)
+
+### Test Rule Page
+![Test Rules and Permissions] (test rule page- skillfi.jpeg)
+
+
 ---
 
 ## Author
