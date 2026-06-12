@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillFi | Automated AI Test</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body class="relative min-h-screen text-white overflow-hidden">
+
+  <!-- Background -->
+  <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://i.pinimg.com/1200x/73/b8/a9/73b8a9fdd483d6ddac928aa780ccfb2d.jpg');"></div>
+  <div class="absolute inset-0 bg-black/40"></div>
+
+  <!-- Navigation -->
+  <!-- Header / Navigation Bar -->
+    <header class="flex items-center justify-between px-8 py-4 bg-white/0 backdrop-blur-md shadow-sm">
+      <div>
+        <img src="https://image2url.com/images/1760087403658-2a78793e-55ea-4d22-80bf-f49a687cd2c8.png" class="w-25 h-10" />
+      </div>
+
+      <nav class="hidden md:flex space-x-8 text-lg font-medium text-white ml-auto">
+        <a href="z.about_us.html" class="hover:text-blue-400">&lt;About Us&gt;</a> <!--about us added-->
+        <a href="services.html" class="hover:text-blue-400">&lt;Services&gt;</a>
+        <a href="contact_us.html" class="hover:text-blue-400">&lt;Contact Us&gt;</a> <!--contact us added-->
+        <a href="loginpage.html" class="hover:text-blue-400">&lt;Sign Up&gt;</a><p>      </p>
+      </nav>
+      
+      <div class="flex items-center">
+        <div 
+          class="bg-blue-600 hover:bg-blue-500 text-white w-10 h-10 flex items-center justify-center rounded-full cursor-pointer shadow-lg transition"
+          onclick="toggleSidebar()">
+          <i class="fa-solid fa-user text-xl"></i>
+        </div>
+      </div>
+    </header>
+
+    <!-- Sidebar (Same as Landing Page) -->
+  <div id="sidebar" class="fixed top-0 right-0 h-full w-0 overflow-hidden bg-slate-900/95 shadow-xl transition-all duration-500 ease-in-out z-20 text-white">
+    <div class="p-6 flex flex-col h-full">
+      <button class="self-end text-3xl hover:text-blue-400 transition" onclick="toggleSidebar()">&times;</button>
+      <div class="mt-6 space-y-6 text-lg flex-1">
+        <h3 class="text-2xl font-semibold border-b border-slate-700 pb-3">Hi, Jhanvi 👋</h3>
+        <!---edit profile page link--><a href="edit_profile.html" class="flex items-center gap-3 hover:text-blue-400 transition"><i class="fa-solid fa-pen"></i> Edit Profile</a>
+        <!---my skills page link--><a href="my_skills.html" class="flex items-center gap-3 hover:text-blue-400 transition"><i class="fa-solid fa-lightbulb"></i> My Skills</a>
+        <!---my badges page link--><a href="my_badges.html" class="flex items-center gap-3 hover:text-blue-400 transition"><i class="fa-solid fa-medal"></i> My Badges</a>
+        <button onclick="openNotifications()" class="flex items-center gap-3 hover:text-blue-400 transition w-full text-left"><i class="fa-solid fa-bell"></i> Notification Preferences</button>
+        <button onclick="logout()" class="flex items-center gap-3 text-red-400 hover:text-red-500 transition w-full text-left"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+      </div>
+      <div class="border-t border-slate-700 pt-5 mt-5">
+        <button onclick="openHelp()" class="flex items-center gap-3 text-blue-400 hover:text-blue-300 transition w-full text-left"><i class="fa-solid fa-circle-question"></i> Help & Support</button>
+      </div>
+    </div>
+  </div>
+<script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.style.width = sidebar.style.width === '300px' ? '0' : '300px';
+    }
+    function openNotifications() {
+      alert("Redirecting to Notification Preferences...");
+      window.location.href = "notifications.html";
+    }
+    function logout() {
+      alert("You have been logged out.");
+      window.location.href = "loginpage.html";
+    }
+    function openHelp() {
+      alert("Redirecting to Help & Support...");
+      window.location.href = "help&support.html";
+    }
+  </script>
+  
+  <!-- Test Slide -->
+  <div class="relative z-10 flex flex-col h-screen">
+    
+    <!-- Question Area (Top 30% of screen) -->
+    <div class="h-[20vh] p-6 text-white text-xl md:text-2xl text-left font-semibold border-b border-white/30 flex flex-col justify-center">
+      <div id="aiQuestion" class="h-full flex items-center justify-center text-center px-4">
+        Test starting soon...
+      </div>
+      <div id="notification" class="text-blue-300 mt-2 text-center"></div>
+    </div>
+
+    <!-- Webcam Area (Bottom 70%) -->
+    <div class="flex-1 flex flex-col items-center justify-center p-6 space-y-2 mt-0 pt-0">
+      <video id="webcam" autoplay muted class="w-[600px] md:w-[600px] border-4 border-white rounded-xl shadow-lg"></video>
+
+      <!-- End Test Button (Initially Disabled) -->
+      <button id="endTestBtn" class="mt-4 px-6 py-3 bg-gray-500 rounded-xl text-white font-semibold cursor-not-allowed" disabled>
+        Next 
+      </button>
+
+      <p id="recordStatus" class="text-white/70 mt-2"></p>
+    </div>
+
+  </div>
+
+  <script>
+    // Webcam + MediaRecorder setup
+    const video = document.getElementById('webcam');
+    let mediaRecorder, recordedChunks = [];
+
+    async function initWebcam() {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      video.srcObject = stream;
+      mediaRecorder = new MediaRecorder(stream);
+      mediaRecorder.ondataavailable = e => {
+        if (e.data.size > 0) recordedChunks.push(e.data);
+      };
+      mediaRecorder.onstop = saveRecording;
+    }
+    initWebcam();
+
+    function saveRecording() {
+      const blob = new Blob(recordedChunks, { type: 'video/webm' });
+      const url = URL.createObjectURL(blob);
+      console.log("Video recorded:", url); // replace with server upload
+    }
+
+    // Questions (replace this with backend AI fetch)
+    const questions = [
+      "Explain a time when you solved a complex problem.",
+      "Describe your favorite project and why it was successful.",
+      "How do you handle tight deadlines?",
+      "Explain a technical concept you recently learned.",
+      "Describe a situation where you demonstrated leadership."
+    ];
+
+    let currentQuestion = 0;
+
+    function startNextQuestion() {
+      if (currentQuestion >= questions.length) {
+        document.getElementById('notification').innerText = "All questions completed!";
+        const endBtn = document.getElementById('endTestBtn');
+        endBtn.disabled = false;
+        endBtn.classList.remove("bg-gray-500","cursor-not-allowed");
+        endBtn.classList.add("bg-blue-600","hover:bg-blue-700");
+        return;
+      }
+
+      // Show question
+      document.getElementById('aiQuestion').innerText = questions[currentQuestion];
+      document.getElementById('notification').innerText = "Recording in progress...";
+
+      recordedChunks = [];
+      mediaRecorder.start();
+
+      // Auto-stop after 60 sec
+      setTimeout(() => {
+        mediaRecorder.stop();
+        document.getElementById('notification').innerText = "Recording complete. Loading next question...";
+        currentQuestion++;
+        // small delay for notification
+        setTimeout(() => startNextQuestion(), 2000);
+      }, 60000);
+    }
+
+    // Start Test automatically after webcam init
+    video.onloadedmetadata = () => {
+      startNextQuestion();
+    };
+
+    // End Test Button
+    document.getElementById('endTestBtn').addEventListener('click', () => {
+      alert("Test completed! Submitting your answers...");
+      window.location.href = "code_page1.html"; // replace with actual submission page
+    });
+  </script>
+
+</body>
+</html>
+

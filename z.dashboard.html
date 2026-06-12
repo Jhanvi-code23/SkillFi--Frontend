@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SkillFi | Dashboard</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    .chart-small { width: 120px; height: 120px; }
+    @media (min-width: 768px) { .chart-small { width: 160px; height: 160px; } }
+    @media (min-width: 1280px) { .chart-small { width: 180px; height: 180px; } }
+    .modal-scroll { max-height: 80vh; overflow:auto; }
+  </style>
+</head>
+<body class="min-h-screen bg-[linear-gradient(135deg,#05060a_0%,#0b1b3b_30%,#071032_100%)] text-white">
+
+<!-- HEADER / NAV -->
+<header class="flex items-center justify-between px-8 py-4 bg-white/0 backdrop-blur-md shadow-sm">
+  <div><img src="https://image2url.com/images/1760087403658-2a78793e-55ea-4d22-80bf-f49a687cd2c8.png" class="w-25 h-10" /></div>
+  <nav class="hidden md:flex space-x-8 text-lg font-medium text-white ml-auto">
+    <a href="z.about_us.html" class="hover:text-blue-400">&lt;About Us&gt;</a>
+    <a href="services.html" class="hover:text-blue-400">&lt;Services&gt;</a>
+    <a href="contact_us.html" class="hover:text-blue-400">&lt;Contact Us&gt;</a>
+    <a href="loginpage.html" class="hover:text-blue-400">&lt;Sign Up&gt;</a>
+  </nav>
+  <div class="flex items-center ml-6">
+    <div 
+      class="bg-blue-600 hover:bg-blue-500 text-white w-10 h-10 flex items-center justify-center rounded-full cursor-pointer shadow-lg transition"
+      onclick="toggleSidebar()">
+      <i class="fa-solid fa-user text-xl"></i>
+    </div>
+  </div>
+</header>
+
+<div class="pt-16 max-w-[1500px] mx-auto px-6">
+  <div class="flex gap-6">
+
+    <!-- LEFT NAV -->
+    <aside class="hidden lg:flex flex-col w-64 shrink-0 rounded-2xl bg-slate-900/60 p-4 border border-white/6 sticky top-20 h-[calc(100vh-5rem)]">
+      <div class="mb-6">
+        <h2 class="text-2xl font-bold">SkillFi</h2>
+        <p class="text-sm text-slate-300 mt-1">Verify & showcase your skills</p>
+      </div>
+
+      <nav class="flex-1 flex flex-col gap-2 text-slate-200">
+        <a href="z.dashboard.html" class="p-2 rounded hover:bg-slate-800/70 flex items-center gap-3"><i class="fa-solid fa-house"></i> Dashboard</a>
+        <a href="edit_profile.html" class="p-2 rounded hover:bg-slate-800/70 flex items-center gap-3"><i class="fa-solid fa-user-pen"></i> Edit Profile</a>
+        <a href="my_skills.html" class="p-2 rounded hover:bg-slate-800/70 flex items-center gap-3"><i class="fa-solid fa-lightbulb"></i> My Skills</a>
+        <a href="my_badges.html" class="p-2 rounded hover:bg-slate-800/70 flex items-center gap-3"><i class="fa-solid fa-medal"></i> My Badges</a>
+      </nav>
+
+      <div class="mt-4 border-t border-white/6 pt-4">
+        <button onclick="window.location.href='help&support.html'" id="helpBtn" class="w-full text-left p-2 rounded hover:bg-slate-800/60 flex items-center gap-3 text-blue-300"><i class="fa-solid fa-circle-question"></i> Help & Support</button>
+        <button onclick="window.location.href='loginpage.html'" id="logoutBtn" class="mt-2 w-full text-left p-2 rounded hover:bg-red-700/30 flex items-center gap-3 text-red-400"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="flex-1">
+
+      <!-- PROFILE + SKILLS TOP CARD -->
+      <section class="bg-white/5 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-white/6 mb-6">
+        <div class="flex flex-col lg:flex-row items-center gap-6">
+          <div class="flex items-center gap-4">
+            <div class="relative">
+              <img id="mainProfileImg"
+                   src="https://static.vecteezy.com/system/resources/previews/018/742/015/original/minimal-profile-account-symbol-user-interface-theme-3d-icon-rendering-illustration-isolated-in-transparent-background-png.png"
+                   alt="Profile"
+                   class="w-32 h-32 rounded-full object-cover border-4 border-blue-500 shadow-lg cursor-pointer"
+                   onclick="openProfileOptions()">
+              <div class="absolute -bottom-1 -right-1 bg-white rounded-full p-1 shadow">
+                <button onclick="openProfileOptions()" class="w-9 h-9 rounded-full flex items-center justify-center text-blue-600"><i class="fa-solid fa-camera"></i></button>
+              </div>
+            </div>
+            <div>
+              <input id="nameInput" type="text" placeholder="Your name" class="bg-white/90 text-slate-900 px-3 py-2 rounded-md font-semibold w-64" />
+              <p class="text-sm text-slate-300 mt-2 max-w-lg">Capture/upload/remove your profile photo. Click the camera icon.</p>
+              <div class="mt-3 flex gap-3">
+                <button onclick="openProfileOptions()" class="px-4 py-2 bg-blue-600 rounded-md hover:bg-blue-500">Capture / Upload</button>
+                <button onclick="removeProfile()" class="px-4 py-2 bg-rose-600 rounded-md hover:bg-rose-500">Remove Photo</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex-1">
+            <label class="text-sm text-slate-300">Add skills (comma separated)</label>
+            <div class="flex gap-3 mt-2">
+              <input id="skillsInput" type="text" placeholder="e.g. HTML, CSS, JavaScript" class="flex-1 px-3 py-2 rounded-md text-slate-900" />
+              <button id="addSkillsBtn" class="px-4 py-2 bg-emerald-500 rounded-md hover:bg-emerald-400">Add</button>
+            </div>
+            <div id="skillsList" class="mt-4 flex flex-wrap gap-3"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- OVERVIEW + CHARTS -->
+      <section class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+
+        <div class="xl:col-span-2 space-y-6">
+          <div class="bg-white/5 p-6 rounded-2xl border border-white/6 shadow-lg">
+            <h3 class="text-lg font-semibold mb-4">Overview</h3>
+            <div class="flex flex-wrap gap-6 items-center">
+              <div class="flex flex-col items-center">
+                <div class="text-sm text-slate-300 mb-2">Technical Knowledge</div>
+                <canvas id="chartTech" class="chart-small"></canvas>
+              </div>
+              <div class="flex flex-col items-center">
+                <div class="text-sm text-slate-300 mb-2">Communication</div>
+                <canvas id="chartComm" class="chart-small"></canvas>
+              </div>
+              <div class="flex flex-col items-center">
+                <div class="text-sm text-slate-300 mb-2">Confidence</div>
+                <canvas id="chartConf" class="chart-small"></canvas>
+              </div>
+              <div class="flex flex-col items-center">
+                <div class="text-sm text-slate-300 mb-2">Creativity</div>
+                <canvas id="chartCreat" class="chart-small"></canvas>
+              </div>
+            </div>
+            <div class="mt-6 bg-slate-900/25 p-3 rounded">
+              <h4 class="font-semibold text-slate-100 mb-2">Recent Activity</h4>
+              <ul id="activityList" class="text-sm text-slate-300 space-y-1"></ul>
+            </div>
+          </div>
+
+          <div class="bg-white/5 p-6 rounded-2xl border border-white/6 shadow-lg">
+            <h3 class="text-lg font-semibold mb-4">Progress by skill (click skill)</h3>
+            <div id="skillsGrid" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+          </div>
+        </div>
+
+        <aside class="bg-white/5 p-6 rounded-2xl border border-white/6 shadow-lg">
+          <h3 class="text-lg font-semibold mb-3">Skill Dashboard</h3>
+          <div id="skillEmpty" class="text-slate-400">Click a skill to preview details.</div>
+          <div id="skillDetail" class="hidden space-y-3">
+            <div class="flex items-center gap-3">
+              <img id="detailProfileImg" src="" class="w-14 h-14 rounded-full object-cover border-2 border-blue-500"/>
+              <div>
+                <div id="detailName" class="font-semibold"></div>
+                <div id="detailSkill" class="text-sm text-slate-300"></div>
+              </div>
+            </div>
+            <canvas id="skillRadar" class="w-full h-40"></canvas>
+            <div class="bg-slate-900/25 p-3 rounded">
+              <div class="text-sm text-slate-300">Progress</div>
+              <div class="w-full bg-slate-800 rounded-full mt-2 h-3 overflow-hidden">
+                <div id="progressBar" class="h-3 rounded-full bg-gradient-to-r from-blue-400 to-blue-600" style="width:0%"></div>
+              </div>
+            </div>
+            <div>
+              <div class="text-sm text-slate-300 mb-2">Suggestions</div>
+              <ul id="skillSuggestions" class="text-sm text-slate-200 space-y-1"></ul>
+            </div>
+            <div class="text-right">
+              <button id="openFullSkillBtn" class="px-4 py-2 bg-blue-600 rounded-md">Open full dashboard</button>
+            </div>
+          </div>
+        </aside>
+
+      </section>
+    </main>
+  </div>
+</div>
+
+<!-- PROFILE MODAL & FULL SKILL MODAL OMITTED FOR BREVITY (INCLUDE SAME AS PREVIOUS) -->
+
+<script>
+/* ---------- State ---------- */
+let state = {
+  name:'Jhanvi Gupta',
+  profile:'https://static.vecteezy.com/system/resources/previews/018/742/015/original/minimal-profile-account-symbol-user-interface-theme-3d-icon-rendering-illustration-isolated-in-transparent-background-png.png',
+  skills:['HTML','CSS','JavaScript','UI/UX'],
+  scores:{technical:85,communication:75,confidence:90,creativity:80},
+  activity:['Completed JS test','Earned CSS Pro badge']
+};
+localStorage.setItem('skillfi_state_v1',JSON.stringify(state));
+
+/* ---------- DOM ---------- */
+const skillsList=document.getElementById('skillsList');
+const skillsGrid=document.getElementById('skillsGrid');
+const activityList=document.getElementById('activityList');
+const addSkillsBtn=document.getElementById('addSkillsBtn');
+const skillsInput=document.getElementById('skillsInput');
+
+/* ---------- RENDER SKILLS ---------- */
+function renderSkills(){
+  skillsList.innerHTML=''; skillsGrid.innerHTML='';
+  state.skills.forEach(s=>{
+    const pill=document.createElement('button');
+    pill.className='px-4 py-2 bg-slate-700/60 text-slate-100 rounded-full hover:bg-slate-700/80';
+    pill.innerText=s;
+    pill.onclick=()=>openSkillPreview(s);
+    skillsList.appendChild(pill);
+    const card=document.createElement('div');
+    card.className='p-4 rounded bg-slate-800/40 text-center cursor-pointer hover:scale-105 transform transition';
+    card.innerHTML=`<div class="font-semibold">${s}</div><div class="text-sm text-slate-300 mt-1">Tap to open</div>`;
+    card.onclick=()=>openSkillPreview(s);
+    skillsGrid.appendChild(card);
+  });
+}
+renderSkills();
+
+addSkillsBtn.addEventListener('click',()=>{
+  const raw=skillsInput.value.trim();
+  if(!raw) return;
+  const parts=raw.split(',').map(x=>x.trim()).filter(Boolean);
+  state.skills=[...new Set([...state.skills,...parts])];
+  state.activity.unshift(`Added skill(s): ${parts.join(', ')}`);
+  skillsInput.value=''; renderSkills(); renderActivity(); renderOverviewCharts();
+});
+
+/* ---------- Activity ---------- */
+function renderActivity(){
+  activityList.innerHTML='';
+  state.activity.slice(0,8).forEach(a=>{const li=document.createElement('li'); li.innerText=a; activityList.appendChild(li);});
+}
+renderActivity();
+
+/* ---------- Doughnut Charts ---------- */
+let techChart,commChart,confChart,creatChart;
+function colorFor(score){return score>=85?'#60a5fa':score>=70?'#3b82f6':'#1e40af';}
+function makeDoughnut(ctx,score){return new Chart(ctx,{type:'doughnut',data:{labels:['score','rest'],datasets:[{data:[score,100-score],backgroundColor:[colorFor(score),'#0b1220'],borderWidth:0}]},options:{cutout:'70%',plugins:{legend:{display:false},tooltip:{enabled:false}},responsive:true,maintainAspectRatio:true}});}
+function renderOverviewCharts(){
+  if(techChart) techChart.destroy();
+  if(commChart) commChart.destroy();
+  if(confChart) confChart.destroy();
+  if(creatChart) creatChart.destroy();
+  techChart=makeDoughnut(document.getElementById('chartTech').getContext('2d'),state.scores.technical);
+  commChart=makeDoughnut(document.getElementById('chartComm').getContext('2d'),state.scores.communication);
+  confChart=makeDoughnut(document.getElementById('chartConf').getContext('2d'),state.scores.confidence);
+  creatChart=makeDoughnut(document.getElementById('chartCreat').getContext('2d'),state.scores.creativity);
+}
+renderOverviewCharts();
+
+/* ---------- Pentagon / Radar Charts ---------- */
+let radarChart=null;
+function openSkillPreview(skill){
+  const skillDetail=document.getElementById('skillDetail');
+  const skillEmpty=document.getElementById('skillEmpty');
+  const progressBar=document.getElementById('progressBar');
+  const skillSuggestions=document.getElementById('skillSuggestions');
+  skillEmpty.classList.add('hidden'); skillDetail.classList.remove('hidden');
+  progressBar.style.width=Math.floor(Math.random()*31+60)+'%';
+  skillSuggestions.innerHTML=''; ['Build 1 project','Take intermediate test','Read latest docs'].forEach(s=>{const li=document.createElement('li'); li.innerText=s; skillSuggestions.appendChild(li);});
+  const radarCtx=document.getElementById('skillRadar').getContext('2d');
+  if(radarChart) radarChart.destroy();
+  radarChart=new Chart(radarCtx,{type:'radar',data:{labels:['Knowledge','Speed','Accuracy','Projects','Concepts'],datasets:[{label:skill,data:[Math.floor(Math.random()*31+60),Math.floor(Math.random()*31+60),Math.floor(Math.random()*31+60),Math.floor(Math.random()*31+60),Math.floor(Math.random()*31+60)],backgroundColor:'rgba(59,130,246,0.2)',borderColor:'#3b82f6',pointBackgroundColor:'#60a5fa'}]},options:{plugins:{legend:{display:false}},scales:{r:{beginAtZero:true,min:0,max:100}}}});
+}
+</script>
+</body>
+</html>
