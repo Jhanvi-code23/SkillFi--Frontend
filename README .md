@@ -81,16 +81,16 @@ Through this project, I gained experience in:
 ## Screenshots
 
 ### Dashboard Badges
-![Badges](screenshots/badges - skillfi.jpeg)
+![Badges](screenshots/badges%20-%20skillfi.jpeg)
 
 ### Login Page
-![Login Page](screenshots/login page skillfi.jpeg)
+![Login Page](screenshots/login%20page%20skillfi.jpeg)
 
 ### Services Page
-![Services](screenshots/services page- skillfi.jpeg)
+![Services](screenshots/services%20page-%20skillfi.jpeg)
 
 ### Test Rule Page
-![Test Rules and Permissions](screenshots/test rule page- skillfi.jpeg)
+![Test Rules and Permissions](screenshots/test%20rule%20page-%20skillfi.jpeg)
 
 
 ---
