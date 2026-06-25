@@ -78,6 +78,9 @@ Through this project, I gained experience in:
 - Working on a large-scale project
 - Hackathon-based development
 
+## LIVE DEMO
+https://jhanvi-code23.github.io/SkillFi--Frontend/
+
 ## Screenshots
 
 ### Dashboard Badges
